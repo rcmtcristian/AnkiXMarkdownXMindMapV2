@@ -5,9 +5,6 @@
 <hr />
 <div class="slide">
   <div class="h1 green greenleft">
-    <span class="greenimg"
-      ><img src="_space.png" height="24" width="24"
-    /></span>
     Mindmap
   </div>
   <div class="h2 greenleft">
@@ -19,7 +16,6 @@
 <hr />
 <div class="slide">
   <div class="h1 pink pinkleft">
-    <span class="pinkimg"><img src="_space.png" height="24" width="24" /></span>
     Answer
   </div>
   <div class="h2 pinkleft wordwrap">{{Answer}}</div>
@@ -28,9 +24,6 @@
 <hr />
 <div class="slide">
   <div class="h1 purple purpleleft">
-    <span class="purpleimg"
-      ><img src="_space.png" height="24" width="24"
-    /></span>
     Detail
   </div>
   <div class="h2 purpleleft wordwrap">{{hint:Detail}}</div>
@@ -38,12 +31,13 @@
 {{/Detail}} {{#Code}}
 <hr />
 <div class="slide">
-  <div class="h1 blue blueleft">
-    <span class="blueimg"><img src="_space.png" height="24" width="24" /></span>
+  <div class="h1 blue blueleft ">
     Code
   </div>
+  <code class="blueleft wordwrap h2  code">
+        {{Code}}
+      </code>
 
-  <div class="h2 blueleft code wordwrap">{{Code}}</div>
 </div>
 {{/Code}}
 
@@ -84,8 +78,8 @@
       resource.src = isLocal ? path : altURL;
       resource.onerror = isLocal
         ? function () {
-            load(false, resolve, reject);
-          }
+          load(false, resolve, reject);
+        }
         : reject;
       document.head.appendChild(resource);
     };

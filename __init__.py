@@ -6,7 +6,7 @@ import os
 import shutil
 from .Template import EDITOR, FRONT, BACK, CSS
 
-TEMPLATENAME = "Anki X Markdown X MindMap"
+TEMPLATENAME = "Ankidian"
 
 FIELDS = ["Question", "Mindmap", "Answer", "Detail", "Code"]
 

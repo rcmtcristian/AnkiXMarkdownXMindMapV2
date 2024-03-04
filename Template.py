@@ -34,7 +34,6 @@ if (document.getElementById("fields") === null) {
 
 FRONT = """
 <div class="h1 red redleft">
-  <span class="redimg"><img src="_space.png" height="24" width="24" /></span>
   Question
   <span id="time"> </span>
 </div>
@@ -50,9 +49,6 @@ BACK = """
 <hr />
 <div class="slide">
   <div class="h1 green greenleft">
-    <span class="greenimg"
-      ><img src="_space.png" height="24" width="24"
-    /></span>
     Mindmap
   </div>
   <div class="h2 greenleft">
@@ -64,7 +60,6 @@ BACK = """
 <hr />
 <div class="slide">
   <div class="h1 pink pinkleft">
-    <span class="pinkimg"><img src="_space.png" height="24" width="24" /></span>
     Answer
   </div>
   <div class="h2 pinkleft wordwrap">{{Answer}}</div>
@@ -73,9 +68,6 @@ BACK = """
 <hr />
 <div class="slide">
   <div class="h1 purple purpleleft">
-    <span class="purpleimg"
-      ><img src="_space.png" height="24" width="24"
-    /></span>
     Detail
   </div>
   <div class="h2 purpleleft wordwrap">{{hint:Detail}}</div>
@@ -84,11 +76,12 @@ BACK = """
 <hr />
 <div class="slide">
   <div class="h1 blue blueleft">
-    <span class="blueimg"><img src="_space.png" height="24" width="24" /></span>
     Code
   </div>
+    <code class="blueleft wordwrap h2  code">
+      {{Code}}
+    </code>
 
-  <div class="h2 blueleft code wordwrap">{{Code}}</div>
 </div>
 {{/Code}}
 
@@ -190,27 +183,31 @@ CSS = """
     font-family: "Cascadia Code";
     src: url("_CascadiaCode.ttf");
   }
+  @font-face {
+  font-family: "Josefin Sans";
+  src: url("JosefinSans-Regular.ttf");
+}
   .card {
-    font: 20px/30px yh;
+    font: 20px/30px ;
     background-color: white;
     text-align: left;
   }
   
   .h1 {
-    font: 22px/22px yh;
+    font: 22px/22px ;
     padding: 0.3em 0em 0.3em 0.5em;
-    font-family: "Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
+    font-family: "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
       "pingfang sc", "microsoft yahei", sans-serif;
   }
   .h2 {
-    font: 20px/30px yh;
+    font: 20px/30px ;
     padding: 0.3em 0em 0.3em 0.5em;
-    font-family: "Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
+    font-family: "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
       "pingfang sc", "microsoft yahei", sans-serif;
   }
   
   code {
-    font-family: "Cascadia Code", "Courier New", "Consolas", Overpass,
+    font-family: "Josefin Sans","Cascadia Code", "Courier New", "Consolas", Overpass,
       "GlowSansSC", "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
   }
   
@@ -232,13 +229,14 @@ CSS = """
   
   .code {
     background-color: #414141;
-    font-family: "Cascadia Code", "Consolas", Overpass, "GlowSansSC",
+    font-family: "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC",
       "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
   }
   
   .wordwrap {
     display: block;
     word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   .red {
@@ -337,7 +335,7 @@ CSS = """
   }
   
   .markmap-foreign {
-    font: 16px/20px "Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
+    font: 16px/20px "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
       "pingfang sc", "microsoft yahei", sans-serif;
   }
 """
