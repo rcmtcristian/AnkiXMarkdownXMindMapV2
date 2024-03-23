@@ -4,7 +4,7 @@
 }
 @font-face {
   font-family: "Josefin Sans";
-  src: url("JosefinSans-Regular.ttf");
+  src: url("_JosefinSans-Regular.ttf");
 }
 .card {
   font: 20px/30px yh;
@@ -48,7 +48,7 @@ code {
 }
 
 .code {
-  background-color: #414141;
+  /* background-color: #414141; */
   font-family: "Josefin Sans", "Cascadia Code", "Consolas", Overpass,
     "GlowSansSC", "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
 }
@@ -57,6 +57,17 @@ code {
   display: block;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+pre,
+code {
+  background: #ccc;
+  padding: 3px 5px;
+  text-align: left;
+  overflow-x: auto;
+  white-space: pre-wrap !important;
+  display: flex;
+  justify-content: center;
 }
 
 .red {
@@ -165,4 +176,36 @@ td {
 .markmap-foreign {
   font: 16px/20px "Josefin Sans", "Cascadia Code", "Consolas", Overpass,
     "GlowSansSC", "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
+}
+
+/* MAIN */
+
+.main {
+  background-color: #d8dee9;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 24em;
+  /* overflow-x: auto; */
+}
+
+.nightMode .main {
+  background-color: #3b4252;
+}
+
+/* FADE IN EFFECT */
+
+.fade-in {
+  animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

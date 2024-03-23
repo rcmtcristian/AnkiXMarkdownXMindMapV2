@@ -1,5 +1,11 @@
 {{FrontSide}} {{#Tags}}
 
+<head>
+  <link rel="preload" href="_prism.css" as="style">
+  <link rel="stylesheet" href="_primsm.css">
+</head>
+
+<div class="main fade-in language-{{Language}}" id="lang"></div>
 <div class="h1 red redleft wordwrap">[Tags] {{Tags}}</div>
 {{/Tags}} {{#Mindmap}}
 <hr />
@@ -28,21 +34,31 @@
   </div>
   <div class="h2 purpleleft wordwrap">{{hint:Detail}}</div>
 </div>
-{{/Detail}} {{#Code}}
+{{/Detail}}
+
+{{#Code}}
 <hr />
 <div class="slide">
   <div class="h1 blue blueleft ">
     Code
   </div>
-  <code class="blueleft wordwrap h2  code">
+  <!-- <code class="blueleft wordwrap h2 code language-js">
         {{Code}}
-      </code>
+      </code> -->
+  <pre class="wordwrap">
+    <code class="language-{{Language}}">{{Code}}</code>
+  </pre>
 
 </div>
 {{/Code}}
 
+<script src="_prism.js"></script>
 <script>
-  var ResourceType = {
+
+
+
+
+  const ResourceType = {
     js: 1,
     css: 2,
   };
@@ -88,6 +104,9 @@
     });
   }
 
+
+
+
   function render() {
     mindmap("mindmaptext");
     show();
@@ -130,5 +149,16 @@
       .replace(/&gt;/gi, ">")
       .replace(/&lt;/gi, "<")
       .replace(/&amp;/gi, "&");
+  }
+
+  header = document.querySelector("#lang").classList.contains("language-py")
+  if (document.querySelector("#lang").classList.contains("language-py") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #ebcb8b;">Python</div>';
+  } else if (document.querySelector("#lang").classList.contains("language-sh") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #d08770">Bash</div>';
+  } else if (document.querySelector("#lang").classList.contains("language-js") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #bf616a">JavaScript</div>';
+  } else {
+    document.querySelector(".heading").innerHTML = '<div style="color: #bf616a">Please select a programming language in the language field!</div>';
   }
 </script>

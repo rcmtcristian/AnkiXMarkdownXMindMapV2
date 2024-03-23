@@ -43,6 +43,11 @@ FRONT = """
 
 BACK = """
 {{FrontSide}} {{#Tags}}
+<head>
+  <link rel="preload" href="_prism.css" as="style">
+  <link rel="stylesheet" href="_prism.css">
+</head>
+
 
 <div class="h1 red redleft wordwrap">[Tags] {{Tags}}</div>
 {{/Tags}} {{#Mindmap}}
@@ -72,21 +77,27 @@ BACK = """
   </div>
   <div class="h2 purpleleft wordwrap">{{hint:Detail}}</div>
 </div>
-{{/Detail}} {{#Code}}
+{{/Detail}} 
+{{#Code}}
 <hr />
 <div class="slide">
   <div class="h1 blue blueleft">
     Code
   </div>
-    <code class="blueleft wordwrap h2  code">
-      {{Code}}
-    </code>
-
+  
+  <pre>
+    <code class="language-js">{{Code}}</code>
+</pre>
 </div>
 {{/Code}}
 
+<script src="_Prism-normalize.js"></script>
+<script src="_prism.js"></script>
+
 <script>
-  var ResourceType = {
+
+
+const ResourceType = {
     js: 1,
     css: 2,
   };
@@ -107,6 +118,7 @@ BACK = """
     )
     .then(render)
     .catch(show);
+
 
   function loadResource(path, altURL, resourceType) {
     let load = function (isLocal, resolve, reject) {
@@ -175,6 +187,17 @@ BACK = """
       .replace(/&lt;/gi, "<")
       .replace(/&amp;/gi, "&");
   }
+
+    header = document.querySelector("#lang").classList.contains("language-py")
+  if (document.querySelector("#lang").classList.contains("language-py") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #ebcb8b;">Python</div>';
+  } else if (document.querySelector("#lang").classList.contains("language-sh") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #d08770">Bash</div>';
+  } else if (document.querySelector("#lang").classList.contains("language-js") == true) {
+    document.querySelector(".heading").innerHTML = '<div style="color: #bf616a">JavaScript</div>';
+  } else {
+    document.querySelector(".heading").innerHTML = '<div style="color: #bf616a">Please select a programming language in the language field!</div>';
+  }
 </script>
 """
 
@@ -185,7 +208,7 @@ CSS = """
   }
   @font-face {
   font-family: "Josefin Sans";
-  src: url("JosefinSans-Regular.ttf");
+  src: url("_JosefinSans-Regular.ttf");
 }
   .card {
     font: 20px/30px ;
@@ -206,11 +229,7 @@ CSS = """
       "pingfang sc", "microsoft yahei", sans-serif;
   }
   
-  code {
-    font-family: "Josefin Sans","Cascadia Code", "Courier New", "Consolas", Overpass,
-      "GlowSansSC", "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
-  }
-  
+
   .redleft {
     border-left: 3px solid #ec6c4f;
   }
@@ -228,17 +247,26 @@ CSS = """
   }
   
   .code {
-    background-color: #414141;
+
     font-family: "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC",
       "Helvetica Neue", "pingfang sc", "microsoft yahei", sans-serif;
   }
   
   .wordwrap {
     display: block;
-    word-wrap: break-word;
     overflow-wrap: break-word;
   }
-  
+pre,
+code {
+  background: #ccc;
+  padding: 3px 5px;
+  text-align: left;
+  overflow-x: auto;
+  white-space: pre-wrap !important;
+  margin: 0 auto; 
+}
+
+
   .red {
     color: #ec6c4f;
   }
@@ -338,4 +366,19 @@ CSS = """
     font: 16px/20px "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC", "Helvetica Neue",
       "pingfang sc", "microsoft yahei", sans-serif;
   }
+
+.fade-in {
+  animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 """
