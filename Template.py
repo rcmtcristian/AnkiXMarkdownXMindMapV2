@@ -49,6 +49,7 @@ BACK = """
 </head>
 
 
+
 <div class="h1 red redleft wordwrap">[Tags] {{Tags}}</div>
 {{/Tags}} {{#Mindmap}}
 <hr />
@@ -85,65 +86,72 @@ BACK = """
     Code
   </div>
   
-  <pre>
-    <code class="language-js">{{Code}}</code>
+  <pre class="language-js">
+    <code >{{Code}}</code>
 </pre>
 </div>
 {{/Code}}
 
-<script src="_Prism-normalize.js"></script>
-<script src="_prism.js"></script>
+ 
+
+
 
 <script>
-
-
 const ResourceType = {
     js: 1,
     css: 2,
   };
-  loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js)
-    .then(() =>
-      loadResource(
+
+  loadResource("_prism.js", "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js", ResourceType.js)
+    .then(() => {
+      // Load other resources sequentially
+      return loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js);
+    })
+    .then(() => {
+      return loadResource(
         "_markmap-lib.js",
         "https://cdn.jsdelivr.net/npm/markmap-lib",
         ResourceType.js
-      )
-    )
-    .then(() =>
-      loadResource(
+      );
+    })
+    .then(() => {
+      return loadResource(
         "_markmap-view.js",
         "https://cdn.jsdelivr.net/npm/markmap-view",
         ResourceType.js
-      )
-    )
+      );
+    })
     .then(render)
     .catch(show);
 
-
   function loadResource(path, altURL, resourceType) {
-    let load = function (isLocal, resolve, reject) {
-      let resource =
-        resourceType === ResourceType.js
-          ? document.createElement("script")
-          : document.createElement("link");
-      if (resourceType === ResourceType.css) {
-        resource.setAttribute("rel", "stylesheet");
-        resource.type = "text/css";
-      }
-      resource.onload = resolve;
-      resource.src = isLocal ? path : altURL;
-      resource.onerror = isLocal
-        ? function () {
-            load(false, resolve, reject);
-          }
-        : reject;
-      document.head.appendChild(resource);
-    };
     return new Promise((resolve, reject) => {
-      load(true, resolve, reject);
+      let resource;
+      if (resourceType === ResourceType.js) {
+        resource = document.createElement("script");
+        resource.src = altURL;
+      } else if (resourceType === ResourceType.css) {
+        resource = document.createElement("link");
+        resource.rel = "stylesheet";
+        resource.type = "text/css";
+        resource.href = altURL;
+      }
+
+      resource.onload = resolve;
+      resource.onerror = reject;
+
+      // Check if the resource is already loaded
+      if (document.querySelector(`script[src="${altURL}"]`) || document.querySelector(`link[href="${altURL}"]`)) {
+        resolve();
+      } else {
+        document.head.appendChild(resource);
+      }
     });
   }
 
+
+
+  
   function render() {
     mindmap("mindmaptext");
     show();
@@ -230,22 +238,22 @@ CSS = """
   }
   
 
-  .redleft {
-    border-left: 3px solid #ec6c4f;
-  }
-  .blueleft {
-    border-left: 3px solid #338eca;
-  }
-  .pinkleft {
-    border-left: 3px solid #d4237a;
-  }
-  .greenleft {
-    border-left: 3px solid #9acd32;
-  }
-  .purpleleft {
-    border-left: 3px solid #594d9c;
-  }
-  
+.redleft {
+  border-left: 3px solid #fd2b3b;
+}
+.blueleft {
+  border-left: 3px solid #338eca;
+}
+.pinkleft {
+  border-left: 3px solid #c11cad;
+}
+.greenleft {
+  border-left: 3px solid #044c46;
+}
+.purpleleft {
+  border-left: 3px solid #811d5e;
+}
+
   .code {
 
     font-family: "Josefin Sans","Cascadia Code", "Consolas", Overpass, "GlowSansSC",
@@ -256,9 +264,11 @@ CSS = """
     display: block;
     overflow-wrap: break-word;
   }
+
 pre,
 code {
-  background: #ccc;
+
+  color: #fff;
   padding: 3px 5px;
   text-align: left;
   overflow-x: auto;
@@ -266,22 +276,21 @@ code {
   margin: 0 auto; 
 }
 
-
-  .red {
-    color: #ec6c4f;
-  }
-  .blue {
-    color: #338eca;
-  }
-  .green {
-    color: #9acd32;
-  }
-  .pink {
-    color: #d4237a;
-  }
-  .purple {
-    color: #594d9c;
-  }
+.red {
+  color: #fd2b3b;
+}
+.blue {
+  color: #0c637f;
+}
+.green {
+  color: #044c46;
+}
+.pink {
+  color: #c11cad;
+}
+.purple {
+  color: #594d9c;
+}
   
   .redimg {
     background: url(_red-day.svg);
@@ -315,7 +324,7 @@ code {
   }
   
   .hint {
-    color: black;
+    color: #fff;
   }
   
   a {

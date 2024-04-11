@@ -2,11 +2,13 @@
 
 <head>
   <link rel="preload" href="_prism.css" as="style">
-  <link rel="stylesheet" href="_primsm.css">
+  <link rel="stylesheet" href="_prism.css">
 </head>
 
 <div class="main fade-in language-{{Language}}" id="lang"></div>
 <div class="h1 red redleft wordwrap">[Tags] {{Tags}}</div>
+
+
 {{/Tags}} {{#Mindmap}}
 <hr />
 <div class="slide">
@@ -52,55 +54,56 @@
 </div>
 {{/Code}}
 
-<script src="_prism.js"></script>
 <script>
-
-
-
-
   const ResourceType = {
     js: 1,
     css: 2,
   };
-  loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js)
-    .then(() =>
-      loadResource(
+
+  loadResource("_prism.js", "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js", ResourceType.js)
+    .then(() => {
+      // Load other resources sequentially
+      return loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js);
+    })
+    .then(() => {
+      return loadResource(
         "_markmap-lib.js",
         "https://cdn.jsdelivr.net/npm/markmap-lib",
         ResourceType.js
-      )
-    )
-    .then(() =>
-      loadResource(
+      );
+    })
+    .then(() => {
+      return loadResource(
         "_markmap-view.js",
         "https://cdn.jsdelivr.net/npm/markmap-view",
         ResourceType.js
-      )
-    )
+      );
+    })
     .then(render)
     .catch(show);
 
   function loadResource(path, altURL, resourceType) {
-    let load = function (isLocal, resolve, reject) {
-      let resource =
-        resourceType === ResourceType.js
-          ? document.createElement("script")
-          : document.createElement("link");
-      if (resourceType === ResourceType.css) {
-        resource.setAttribute("rel", "stylesheet");
-        resource.type = "text/css";
-      }
-      resource.onload = resolve;
-      resource.src = isLocal ? path : altURL;
-      resource.onerror = isLocal
-        ? function () {
-          load(false, resolve, reject);
-        }
-        : reject;
-      document.head.appendChild(resource);
-    };
     return new Promise((resolve, reject) => {
-      load(true, resolve, reject);
+      let resource;
+      if (resourceType === ResourceType.js) {
+        resource = document.createElement("script");
+        resource.src = altURL;
+      } else if (resourceType === ResourceType.css) {
+        resource = document.createElement("link");
+        resource.rel = "stylesheet";
+        resource.type = "text/css";
+        resource.href = altURL;
+      }
+
+      resource.onload = resolve;
+      resource.onerror = reject;
+
+      // Check if the resource is already loaded
+      if (document.querySelector(`script[src="${altURL}"]`) || document.querySelector(`link[href="${altURL}"]`)) {
+        resolve();
+      } else {
+        document.head.appendChild(resource);
+      }
     });
   }
 
