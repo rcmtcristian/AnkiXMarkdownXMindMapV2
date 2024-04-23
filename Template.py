@@ -328,7 +328,7 @@ code {
   }
   
   a {
-    color: #666;
+    color: #7575ff;
   }
   img {
     max-width: 100%;
