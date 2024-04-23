@@ -55,58 +55,40 @@
 {{/Code}}
 
 <script>
+
+  const loadedResources = new Set();
+
   const ResourceType = {
     js: 1,
     css: 2,
   };
 
   loadResource("_prism.js", "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js", ResourceType.js)
-    .then(() => {
-      // Load other resources sequentially
-      return loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js);
-    })
-    .then(() => {
-      return loadResource(
-        "_markmap-lib.js",
-        "https://cdn.jsdelivr.net/npm/markmap-lib",
-        ResourceType.js
-      );
-    })
-    .then(() => {
-      return loadResource(
-        "_markmap-view.js",
-        "https://cdn.jsdelivr.net/npm/markmap-view",
-        ResourceType.js
-      );
-    })
+    .then(() => loadResource("_d3@6.js", "https://cdn.jsdelivr.net/npm/d3@6", ResourceType.js))
+    .then(() => loadResource("_markmap-lib.js", "https://cdn.jsdelivr.net/npm/markmap-lib", ResourceType.js))
+    .then(() => loadResource("_markmap-view.js", "https://cdn.jsdelivr.net/npm/markmap-view", ResourceType.js))
     .then(render)
     .catch(show);
 
   function loadResource(path, altURL, resourceType) {
+    if (loadedResources.has(altURL)) {
+      return Promise.resolve();
+    }
+
     return new Promise((resolve, reject) => {
-      let resource;
-      if (resourceType === ResourceType.js) {
-        resource = document.createElement("script");
-        resource.src = altURL;
-      } else if (resourceType === ResourceType.css) {
-        resource = document.createElement("link");
-        resource.rel = "stylesheet";
-        resource.type = "text/css";
-        resource.href = altURL;
-      }
+      const resource = resourceType === ResourceType.js ?
+        Object.assign(document.createElement("script"), { src: altURL }) :
+        Object.assign(document.createElement("link"), { rel: "stylesheet", type: "text/css", href: altURL });
 
-      resource.onload = resolve;
-      resource.onerror = reject;
-
-      // Check if the resource is already loaded
-      if (document.querySelector(`script[src="${altURL}"]`) || document.querySelector(`link[href="${altURL}"]`)) {
+      resource.onload = () => {
+        loadedResources.add(altURL);
         resolve();
-      } else {
-        document.head.appendChild(resource);
-      }
+      };
+
+      resource.onerror = reject;
+      document.head.appendChild(resource);
     });
   }
-
 
 
 
