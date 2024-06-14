@@ -74,7 +74,7 @@ BACK = """
 <hr />
 <div class="slide">
   <div class="h1 purple purpleleft">
-    Detail
+    Expand
   </div>
   <div class="h2 purpleleft wordwrap">{{hint:Detail}}</div>
 </div>
